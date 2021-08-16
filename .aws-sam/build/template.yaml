@@ -1,0 +1,26 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: palindrome-app
+Transform:
+- AWS::Serverless-2016-10-31
+Resources:
+  PalindromeLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      ContentUri: PalindromeLayer
+      CompatibleRuntimes:
+      - nodejs14.x
+      RetentionPolicy: retain
+    Metadata:
+      BuildMethod: nodejs14.x
+  PalindromeFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: PalindromeFunction
+      Handler: app.handler
+      Runtime: nodejs14.x
+      MemorySize: 128
+      Timeout: 100
+      Policies:
+      - AWSLambdaBasicExecutionRole
+      Layers:
+      - Ref: PalindromeLayer
